@@ -6,7 +6,7 @@ if __name__ == "__main__":
   # Usiamo SPY per le azioni e SHV (Short Treasury Bond ETF) come sostituto del cash/liquidità
   tickers = ["SPY", "SHV"]
   print(
-      "--- SCARICAMENTO DATI PER VOLATILITY TARGETING (2006-2026) ---"
+      "--- DOWNLOADING DATA VOLATILITY TARGETING (2006-2026) ---"
   )
   data = yf.download(
       tickers, start="2006-01-01", end="2026-01-01", progress=False
@@ -57,7 +57,7 @@ if __name__ == "__main__":
   df_years.index = df_years.index.year
 
   print("\n" + "=" * 65)
-  print(" PERFORMANCE ANNUALE: VOLATILITY TARGETING 5% VS S&P 500")
+  print(" ANNUAL PERFORMANCE: VOLATILITY TARGETING 5% VS S&P 500")
   print("=" * 65)
   print(df_years.to_string())
   print("=" * 65)
@@ -67,12 +67,15 @@ if __name__ == "__main__":
   ann_volatility = portfolio_returns.std() * np.sqrt(252) * 100
   neg_years = (df_years["Volatility Targeting 5% [%]"] < 0).sum()
 
-  print(f"\nRendimento Totale Strategia: {total_return:.2f}%")
-  print(f"Volatilità Annualizzata: {ann_volatility:.2f}%  <-- (Sotto il 6%!)")
+  print(f"\nTotal return: {total_return:.2f}%")
+  mean_returns = df_years["Volatility Targeting 5% [%]"].mean()
+  print(f"Average yearly return: {mean_returns:.2f}%")
+  print(f"Annualized volatily: {ann_volatility:.2f}%  <-- (Under 6%!)")
   print(
-      f"Anni in negativo per la Strategia: {neg_years} su {len(df_years)}"
-      " (Obiettivo: max 1)"
+      f"Years closed with negative returns: {neg_years} su {len(df_years)}"
+      " (Goal: max 1)"
   )
 
-  df_years.to_csv("performance_vol_targeting_annuale.csv")
-  print("\nTabella salvata nel file: 'performance_vol_targeting_annuale.csv'")
+  df_years.to_csv("performance_vol_targeting_annual.csv")
+  print("\nTable saved as: 'performance_vol_targeting_annual.csv'")
+
